@@ -1,41 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>KSN Bakery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<title>KSN Bakery Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body style="font-family:Arial;text-align:center;padding:20px">
 
-  <h2>🧁 KSN Bakery & Cake</h2>
-  <p>សូមជ្រើសរើសសាខា</p>
+<body style="font-family:Arial;padding:15px">
 
-  <select id="branch" style="width:80%;padding:12px">
-    <option value="">-- ជ្រើសសាខា --</option>
-    <option>Sonthormuk</option>
-    <option>Tuon Fa School</option>
-    <option>Branch 3</option>
-    <option>Branch 4</option>
-  </select>
+<h2>🧁 KSN Bakery & Cake</h2>
 
-  <br><br>
+<!-- Branch -->
+<p><b>Branch</b></p>
+<select id="branch" style="width:100%;padding:10px">
+  <option value="">-- Select Branch --</option>
+  <option>Sonthormuk</option>
+  <option>Tuon Fa School</option>
+  <option>Branch 3</option>
+  <option>Branch 4</option>
+</select>
 
-  <button onclick="go()" style="padding:12px 30px;background:#c49b63;color:white;border:none">
-    Order Now
-  </button>
+<hr>
 
-  <script>
-    Telegram.WebApp.expand();
-    function go(){
-      let b = document.getElementById("branch").value;
-      if(!b){
-        alert("សូមជ្រើសសាខា");
-        return;
-      }
-      alert("អ្នកបានជ្រើសសាខា: " + b);
-    }
-  </script>
+<!-- Menu -->
+<h3>🍞 Menu</h3>
+
+<div>
+  <p>Butter Bread - $1</p>
+  <button onclick="add('Butter Bread',1)">Add</button>
+</div>
+
+<div>
+  <p>Chocolate Cake - $12</p>
+  <button onclick="add('Chocolate Cake',12)">Add</button>
+</div>
+
+<div>
+  <p>Croissant - $1.5</p>
+  <button onclick="add('Croissant',1.5)">Add</button>
+</div>
+
+<hr>
+
+<!-- Cart -->
+<h3>🛒 Cart</h3>
+<div id="cart"></div>
+
+<p><b>Total: $<span id="total">0</span></b></p>
+
+<button onclick="checkout()" style="padding:12px;width:100%;background:#c49b63;color:white;border:none">
+  Checkout
+</button>
+
+<script>
+Telegram.WebApp.expand();
+
+let cart = [];
+let total = 0;
+
+function add(name, price){
+  cart.push({name, price});
+  total += price;
+  render();
+}
+
+function render(){
+  let html = "";
+  cart.forEach((i,idx)=>{
+    html += (idx+1)+". "+i.name+" - $"+i.price+"<br>";
+  });
+  document.getElementById("cart").innerHTML = html;
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function checkout(){
+  if(!document.getElementById("branch").value){
+    alert("Please select branch");
+    return;
+  }
+  alert("Order sent!\nTotal: $" + total);
+}
+</script>
 
 </body>
 </html>
