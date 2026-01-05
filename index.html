@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>F-Four Bakery</title>
+<title>KSN Bakery Shop</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body style="font-family:Arial;padding:15px">
 
-<h2>F-Four Bakery</h2>
+<h2>🧁 KSN Bakery & Cake</h2>
 
 <!-- Branch -->
 <p><b>Branch</b></p>
 <select id="branch" style="width:100%;padding:10px">
   <option value="">-- Select Branch --</option>
   <option>Sonthormuk</option>
-  <option>Camco</option>
-  <option>Olympic</option>
-  <option>Setec</option>
+  <option>Tuon Fa School</option>
+  <option>Branch 3</option>
+  <option>Branch 4</option>
 </select>
 
 <hr>
@@ -117,19 +117,44 @@ function checkout(){
     created_at: new Date()
   };
 
-  // Save to Firestore
-  db.collection("orders").add(order)
-  .then((docRef)=>{
-    alert("Order Created!\nID: "+docRef.id+"\nTotal: $"+total);
-    console.log(order);
-    sendTelegramNotification(order, docRef.id);
-    cart = []; total=0; render();
+  alert("Order Created!\nTotal: $" + total);
+  console.log(order);
+
+  // Send Telegram Notification
+  sendTelegramNotification(order, "AUTO_ORDER_ID_001");
+
+  // Reset Cart
+  cart = []; total = 0; render();
+}
+
+// ----------------------
+// Telegram Notification
+// ----------------------
+function sendTelegramNotification(order, orderId){
+  const chatId = "-5267472097"; // Your Chat ID
+  const botToken = "8259747744:AAFAbj-LCJyLvF8mbP8CG4y5C-30VbqWQFQF"; // Your Bot Token
+
+  const text = `🧾 New Order #${orderId}\n` +
+               `🏪 Branch: ${order.branch}\n` +
+               `🛒 Items: ${order.items.map(i=>i.name).join(", ")}\n` +
+               `💰 Total: $${order.total}\n` +
+               `💳 Payment: ${order.payment}\n` +
+               `🚚 Type: ${order.orderType}\n` +
+               `📞 Phone: ${order.phone}\n` +
+               `🏠 Address: ${order.address}`;
+
+  // Browser Fetch (may fail due to CORS)
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text: text })
   })
-  .catch((error)=>{
-    alert("Error saving order: "+error);
-  });
+  .then(res => res.json())
+  .then(data => console.log("Telegram Notification sent:", data))
+  .catch(err => console.error("Telegram Notification error:", err));
 }
 </script>
+
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
