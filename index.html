@@ -144,10 +144,10 @@ function sendTelegramNotification(order, orderId){
                `🏠 Address: ${order.address}`;
 
   // Browser Fetch (may fail due to CORS)
-  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+  fetch(`https://api.telegram.org/bot${8259747744:AAFAbj-LCJyLvF8mbP8CG4y5C-30VbqWQFQF}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chat_id: chatId, text: text })
+    body: JSON.stringify({ chat_id: -5267472097, text: text })
   })
   .then(res => res.json())
   .then(data => console.log("Telegram Notification sent:", data))
