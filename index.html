@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>KSN Bakery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body style="font-family:Arial;text-align:center;padding:20px">
+
+  <h2>🧁 KSN Bakery & Cake</h2>
+  <p>សូមជ្រើសរើសសាខា</p>
+
+  <select id="branch" style="width:80%;padding:12px">
+    <option value="">-- ជ្រើសសាខា --</option>
+    <option>Sonthormuk</option>
+    <option>Tuon Fa School</option>
+    <option>Branch 3</option>
+    <option>Branch 4</option>
+  </select>
+
+  <br><br>
+
+  <button onclick="go()" style="padding:12px 30px;background:#c49b63;color:white;border:none">
+    Order Now
+  </button>
+
+  <script>
+    Telegram.WebApp.expand();
+    function go(){
+      let b = document.getElementById("branch").value;
+      if(!b){
+        alert("សូមជ្រើសសាខា");
+        return;
+      }
+      alert("អ្នកបានជ្រើសសាខា: " + b);
+    }
+  </script>
+
+</body>
+</html>
