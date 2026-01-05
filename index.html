@@ -113,16 +113,23 @@ function checkout(){
     payment: payment.value,
     phone: phone.value,
     address: address.value,
-    status: "PENDING"
+    status: "PENDING",
+    created_at: new Date()
   };
 
-  alert("Order Created!\nStatus: PENDING\nTotal: $" + total);
-  console.log(order);
+  // Save to Firestore
+  db.collection("orders").add(order)
+  .then((docRef)=>{
+    alert("Order Created!\nID: "+docRef.id+"\nTotal: $"+total);
+    console.log(order);
+    sendTelegramNotification(order, docRef.id);
+    cart = []; total=0; render();
+  })
+  .catch((error)=>{
+    alert("Error saving order: "+error);
+  });
 }
 </script>
-
-</body>
-</html>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -131,3 +138,6 @@ function checkout(){
   const app = firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 </script>
+
+  </body>
+</html>
